@@ -2,6 +2,60 @@
 <html lang="en">  
 	<head>  
 		<title>Centre Transfer Credits</title>  
+    <script>  
+      const coursesToAdd = new Array()
+
+      function addToListPressed(){
+        deSelectAll();
+        showElementsInArray();
+      }
+    
+      function showElementsInArray(){
+        for(let i = 0; i < coursesToAdd.length; i++){
+          document.getElementById(coursesToAdd[i]).style.display = "block";
+        }
+
+        while(coursesToAdd.length > 0){
+          coursesToAdd.pop();
+        }
+      }
+
+      function modifyArray(id){
+        for(let i = 0; i < coursesToAdd.length; i++){
+          if(coursesToAdd[i] == id){
+            coursesToAdd.splice(i, 1);
+            return
+          }
+        }
+
+        coursesToAdd.push(id);
+        
+        console.log(coursesToAdd);
+      }
+
+      function deSelectAll(){
+        let checkboxes = document.getElementsByName("checkall");
+
+        for(let i=0; i < checkboxes.length; i++){
+          element = checkboxes[i];
+
+          element.checked = false;
+        }
+
+        document.getElementById("addToList").checked = false;
+      }
+
+      function selectAll(source){
+        let checkboxes = document.getElementsByName("checkall");
+        for(let i = 0; i < checkboxes.length; i++){
+          element = checkboxes[i];
+ 
+          element.checked = source.checked;
+          //let event = new CustomEvent("onclick");
+          //element.dispatchEvent(event);
+        }
+      }
+    </script>
 	</head>  
 	<body> 
     <header style="background-color: yellow;height: 150px;"><h1 style="text-align: center;">Centre College</h1></header>
@@ -18,26 +72,30 @@
             <th>Transfer Institution</th>
             <th>Centre Course</th>
             <th>Centre Credits</th>
+            <th>Remove</th>
           </tr>
-          <tr>
+          <tr id="potions" style="display: none;">
             <td>First Year Potions</td>
             <td>Hogwarts</td>
             <td>CHE 117</td>
             <td>4</td>
+            <td><input type="button" value="X" onclick="document.getElementById('potions').style.display = 'none'"></td>
           </tr>
-          <tr>
+          <tr id="herbology" style="display: none;">
             <td>Herbology 2</td>
             <td>Hogwarts</td>
             <td>BIO 110</td>
             <td>3</td>
+            <td><input type="button" value="X" onclick="document.getElementById('herbology').style.display = 'none'"></td>
           </tr>
-          <tr>
+          <tr id="muggle" style="display: none;">
             <td>Intro to Muggle Studies</td>
             <td>Hogwarts</td>
             <td>SOC 110</td>
             <td>3</td>
+            <td><input type="button" value="X" onclick="document.getElementById('muggle').style.display = 'none'"></td>
           </tr>
-          <tr>
+          <tr id="writing" style="display: none;">
             <td>ENG 101 Writing</td>
             <td>JCTC</td>
             <td>ENG 111</td>
@@ -54,39 +112,41 @@
       <h1 style="display: inline;">Hogwarts Transferrable Credits</h1>
       <div class="search">
         <form>
-          <input type="text" placeholder="Search">
+          <input type="text" placeholder="Course Search">
           <input type="submit">
         </form>
       </div>
       <div class="course-list">
         <form id="saved-list"></form>
-        <input type="submit" form="saved-list" style="display: inline;float: right" value="Add to List">
+        <input type="button" form="saved-list" style="display: inline;float: right" value="Add to List" onclick="addToListPressed()">
         <table>
           <tr>
             <th style="width: 800px;">Transferring Institution Course</th>
             <th>Centre Course</th>
             <th>Transfer Credits</th>
-            <th><input type="checkbox" form="saved-list"></th>
+            <th><input type="checkbox" id="addToList" form="saved-list" onclick="selectAll(this)"></th>
           </tr>
           <tr>
             <td>First Year Potions</td>
             <td>CHE 117</td>
             <td>4</td>
-            <td><input type="checkbox" form="saved-list"></td>
+            <td><input type="checkbox" form="saved-list" name="checkall" onclick="modifyArray('potions')"></td>
           </tr>
           <tr>
             <td>Herbology 2</td>
             <td>BIO 110</td>
             <td>3</td>
-            <td><input type="checkbox" form="saved-list"></td>
+            <td><input type="checkbox" form="saved-list" name="checkall" onclick="modifyArray('herbology')"></td>
           </tr>
           <tr>
             <td>Muggle Studies</td>
             <td>SOC 110</td>
             <td>3</td>
-            <td><input type="checkbox" form="saved-list"></td>
+            <td><input type="checkbox" form="saved-list" name="checkall" onclick="modifyArray('muggle')"></td>
           </tr>
         </table>
+        <p>Don't see your course? Use the form below to submit a course for transfer approval:</p>
+        <table><input type="submit" value="New Course Approval"></table>
       </div>
     </div>
 	</body>
